@@ -36,4 +36,16 @@ public class Audit {
     public Long getModifiedAtTimestamp() {
         return modifiedAt != null ? modifiedAt.getEpochSecond() : 0L;
     }
+
+//    @PrePersist
+//    public void fillAtSave() {
+//        createdAt = Instant.now();
+//        modifiedAt = Instant.now();
+//    }
+//
+//    @PreUpdate
+//    public void fillAtUpdate() {
+//        modifiedAt = Instant.now();
+//    }
+
 }

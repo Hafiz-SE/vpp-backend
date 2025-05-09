@@ -1,4 +1,4 @@
-package org.opensource.energy.vpp_backend.config;
+package org.opensource.energy.vpp_backend.filter;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

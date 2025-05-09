@@ -4,11 +4,15 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.opensource.energy.vpp_backend.dto.response.error.ErrorResponse;
 import org.opensource.energy.vpp_backend.dto.response.error.FieldErrorDetail;
+import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.method.ParameterValidationResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.HandlerMethodValidationException;
 
 import java.util.List;
 import java.util.Optional;
@@ -47,6 +51,45 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.badRequest().body(errorResponse);
     }
+
+    @ExceptionHandler(HandlerMethodValidationException.class)
+    public ResponseEntity<ErrorResponse> handleHandlerMethodValidationException(
+            HandlerMethodValidationException ex,
+            HttpServletRequest request
+    ) {
+        List<FieldErrorDetail> errorDetails = ex.getParameterValidationResults().stream()
+                .flatMap(paramResult ->
+                        paramResult.getResolvableErrors().stream()
+                                .map(error -> FieldErrorDetail.builder()
+                                        .field(error instanceof FieldError fieldError
+                                                ? fieldError.getField()
+                                                : getParamName(paramResult))
+                                        .message(Optional.ofNullable(error.getDefaultMessage()).orElse("Invalid value"))
+                                        .build()
+                                )
+                )
+                .toList();
+
+        log.warn("Handler Method Validation failed for request {} - {} field error(s)",
+                request.getRequestURI(), errorDetails.size());
+
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .message(DEFAULT_VALIDATION_ERROR_MESSAGE)
+                .errorCode(DEFAULT_VALIDATION_ERROR_CODE)
+                .path(request.getRequestURI())
+                .errors(errorDetails)
+                .build();
+
+        return ResponseEntity.badRequest().body(errorResponse);
+    }
+
+
+    private String getParamName(ParameterValidationResult paramResult) {
+        return Optional.of(paramResult.getMethodParameter())
+                .map(MethodParameter::getParameterName)
+                .orElse("unknown");
+    }
+
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGeneric(Exception ex, HttpServletRequest request) {

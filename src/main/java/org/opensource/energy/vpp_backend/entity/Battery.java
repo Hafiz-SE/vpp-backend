@@ -1,30 +1,27 @@
 package org.opensource.energy.vpp_backend.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import lombok.*;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
 @ToString(callSuper = true)
-@MappedSuperclass
 @Table(
         name = "battery",
         indexes = {
                 @Index(name = "idx_battery_postcode", columnList = "postcode")
         }
 )
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Battery extends Audit {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "battery_id_seq_gen")
-    @SequenceGenerator(
-            name = "battery_id_seq_gen",
-            sequenceName = "battery_id_seq",
-            allocationSize = 1
-    )
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "battery_seq_gen")
+    @SequenceGenerator(name = "battery_seq_gen", sequenceName = "battery_id_seq", allocationSize = 50)
     private Long id;
+
 
     @Column(nullable = false, unique = true, length = 512)
     private String name;
