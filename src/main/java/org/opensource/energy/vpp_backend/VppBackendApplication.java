@@ -11,5 +11,4 @@ public class VppBackendApplication {
     public static void main(String[] args) {
         SpringApplication.run(VppBackendApplication.class, args);
     }
-
 }
