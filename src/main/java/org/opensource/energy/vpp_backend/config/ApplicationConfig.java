@@ -16,6 +16,7 @@ import static org.opensource.energy.vpp_backend.constant.SwaggerConstants.*;
 
 @Configuration
 public class ApplicationConfig {
+    
     // TODO: Set the correct origin once the frontend URL is available
     @Value("${cors.allowed-origin:*}")
     private String allowedOrigin;

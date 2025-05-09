@@ -1,6 +1,7 @@
 package org.opensource.energy.vpp_backend.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.opensource.energy.vpp_backend.aspect.RetryOnDatabaseFailure;
 import org.opensource.energy.vpp_backend.dto.request.CreateBatteryRequest;
 import org.opensource.energy.vpp_backend.entity.Battery;
 import org.opensource.energy.vpp_backend.repository.BatteryRepository;
@@ -19,6 +20,7 @@ public class BatteryServiceImpl implements BatteryService {
 
     @Transactional
     @Override
+    @RetryOnDatabaseFailure
     public List<Long> saveBatteries(Collection<CreateBatteryRequest> batteries) {
         List<Battery> batteriesToSave = batteries.stream()
                 .map(req -> Battery.builder()
