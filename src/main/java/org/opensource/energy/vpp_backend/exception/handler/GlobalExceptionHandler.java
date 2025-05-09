@@ -1,5 +1,6 @@
 package org.opensource.energy.vpp_backend.exception.handler;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.opensource.energy.vpp_backend.dto.response.error.ErrorResponse;
@@ -21,6 +22,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
+@Hidden
 @RestControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
