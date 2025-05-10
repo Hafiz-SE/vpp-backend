@@ -5,7 +5,7 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class SwaggerConstants {
     public static final String VPP_API_VERSION = "v1";
-    public static final String VPP_API_TITLE = "VPP_API";
+    public static final String VPP_API_TITLE = "VPP Battery API";
     public static final String VPP_API_DESCRIPTION = "      The VPP API provides endpoints to manage and analyze distributed battery data \n" +
             "      within a Virtual Power Plant system. It enables clients to store battery metadata \n" +
             "      (e.g., name, postcode, watt capacity) and retrieve filtered statistics such as \n" +

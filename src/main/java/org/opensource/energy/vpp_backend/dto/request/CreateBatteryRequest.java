@@ -5,10 +5,12 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
+import lombok.Builder;
 import lombok.Data;
 
 @Data
 @Schema(description = "Request object for creating a new battery")
+@Builder
 public class CreateBatteryRequest {
     @Schema(description = "Battery name", example = "Battery-A1")
     @NotBlank(message = "Name is required")

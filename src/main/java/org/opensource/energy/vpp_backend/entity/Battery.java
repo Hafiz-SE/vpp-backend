@@ -22,7 +22,6 @@ public class Battery extends Audit {
     @SequenceGenerator(name = "battery_seq_gen", sequenceName = "battery_id_seq", allocationSize = 50)
     private Long id;
 
-
     @Column(nullable = false, unique = true, length = 512)
     private String name;
 
