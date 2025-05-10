@@ -180,7 +180,7 @@
                                     <limits>
                                         <limit>
                                             <counter>LINE</counter>
-                                            <value>TESTRATIO</value>
+                                            <value>COVEREDRATIO</value>
                                             <minimum>0.70</minimum>
                                         </limit>
                                     </limits>

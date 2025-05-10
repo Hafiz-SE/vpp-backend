@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @Testcontainers
 @DataJpaTest
@@ -45,7 +46,7 @@ public class BatteryRepositoryTest {
     private BatteryRepository batteryRepository;
 
     @Test
-    void testSaveAndRetrieveBattery() {
+    void given_valid_battery_when_saved_then_it_can_be_retrieved_successfully() {
         Battery battery = Battery.builder()
                 .name("Test Battery")
                 .postcode(12345)
@@ -61,7 +62,7 @@ public class BatteryRepositoryTest {
     }
 
     @Test
-    void should_save_all_batteries_successfully() {
+    void given_valid_battery_requests_when_saving_all_batteries_then_all_batteries_are_saved_successfully() {
         List<Battery> batteries = List.of(
                 Battery.builder().name("Battery A").postcode(1010).wattCapacity(100L).build(),
                 Battery.builder().name("Battery B").postcode(1020).wattCapacity(200L).build()
@@ -76,7 +77,7 @@ public class BatteryRepositoryTest {
     }
 
     @Test
-    void should_enforce_unique_name_constraint() {
+    void given_duplicate_battery_names_when_saving_then_throw_unique_constraint_violation() {
         // Given
         Battery b1 = Battery.builder()
                 .name("UniqueBattery")
@@ -93,7 +94,7 @@ public class BatteryRepositoryTest {
         batteryRepository.save(b1);
 
         // When / Then
-        org.junit.jupiter.api.Assertions.assertThrows(Exception.class, () -> {
+        assertThrows(Exception.class, () -> {
             batteryRepository.save(b2);
             batteryRepository.flush(); // force insert to catch constraint
         });

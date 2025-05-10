@@ -5,7 +5,6 @@ import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.opensource.energy.vpp_backend.VppBackendApplication;
 import org.opensource.energy.vpp_backend.controller.BatteryController;
 import org.opensource.energy.vpp_backend.dto.request.CreateBatteryRequest;
 import org.opensource.energy.vpp_backend.dto.response.FilteredBatteryStat;
@@ -27,7 +26,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(value = BatteryController.class, excludeAutoConfiguration = VppBackendApplication.class)
+@WebMvcTest(value = BatteryController.class)
 @ActiveProfiles("test")
 @Tag("integration")
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
@@ -46,7 +45,8 @@ class BatteryControllerTest {
     private AuditorAware<String> auditorAware;
 
     @Test
-    void should_return_filtered_stats_successfully() throws Exception {
+    void given_valid_filter_range_when_requesting_battery_stats_then_filtered_stats_are_returned_successfully()
+            throws Exception {
         FilteredBatteryStat mockStat = FilteredBatteryStat.builder()
                 .batteryNames(List.of("Battery1", "Battery2"))
                 .totalCapacity(300L)
@@ -56,7 +56,8 @@ class BatteryControllerTest {
                 .totalCount(2L)
                 .build();
 
-        when(batteryService.getFilteredBatteryStat(1000, 2000, null, null)).thenReturn(mockStat);
+        when(batteryService.getFilteredBatteryStat(1000, 2000, null, null))
+                .thenReturn(mockStat);
 
         mockMvc.perform(get("/batteries")
                         .param("postcodeFrom", "1000")
@@ -73,7 +74,7 @@ class BatteryControllerTest {
     }
 
     @Test
-    void should_save_batteries_successfully() throws Exception {
+    void given_valid_battery_list_when_saving_then_batteries_are_saved_successfully() throws Exception {
         List<CreateBatteryRequest> requests = List.of(
                 CreateBatteryRequest.builder().name("Battery1").postcode(1000).capacity(100L).build()
         );
@@ -88,7 +89,7 @@ class BatteryControllerTest {
     }
 
     @Test
-    void should_return_415_when_content_type_is_missing_on_get() throws Exception {
+    void given_missing_content_type_on_get_request_when_calling_endpoint_then_status_415_is_returned() throws Exception {
         mockMvc.perform(get("/batteries")
                         .param("postcodeFrom", "1000")
                         .param("postcodeTo", "2000"))
@@ -101,7 +102,7 @@ class BatteryControllerTest {
     }
 
     @Test
-    void should_return_415_when_content_type_is_missing_on_post() throws Exception {
+    void given_missing_content_type_on_post_request_when_calling_endpoint_then_status_415_is_returned() throws Exception {
         List<CreateBatteryRequest> requests = List.of(
                 CreateBatteryRequest.builder().name("Battery1").postcode(1000).capacity(100L).build()
         );
@@ -117,7 +118,7 @@ class BatteryControllerTest {
     }
 
     @Test
-    void should_return_400_when_postcode_to_is_missing() throws Exception {
+    void given_missing_postcode_to_when_calling_filter_stats_endpoint_then_status_400_is_returned() throws Exception {
         mockMvc.perform(get("/batteries")
                         .param("postcodeFrom", "1000")
                         .contentType(MediaType.APPLICATION_JSON))
@@ -125,7 +126,7 @@ class BatteryControllerTest {
     }
 
     @Test
-    void should_return_400_when_postcode_from_is_invalid() throws Exception {
+    void given_invalid_postcode_from_when_calling_filter_stats_endpoint_then_status_400_is_returned() throws Exception {
         mockMvc.perform(get("/batteries")
                         .param("postcodeFrom", "abcd")
                         .param("postcodeTo", "2000")
@@ -134,14 +135,15 @@ class BatteryControllerTest {
     }
 
     @Test
-    void should_return_400_when_both_postcode_params_are_missing() throws Exception {
+    void given_missing_postcode_from_and_postcode_to_when_calling_filter_stats_endpoint_then_status_400_is_returned()
+            throws Exception {
         mockMvc.perform(get("/batteries")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
     }
 
     @Test
-    void should_return_200_with_empty_stats_when_no_data_found() throws Exception {
+    void given_valid_filter_range_when_no_batteries_found_then_status_200_with_empty_stats_is_returned() throws Exception {
         when(batteryService.getFilteredBatteryStat(1000, 2000, null, null))
                 .thenReturn(FilteredBatteryStat.builder()
                         .batteryNames(List.of())
@@ -160,7 +162,7 @@ class BatteryControllerTest {
     }
 
     @Test
-    void should_return_400_when_posting_empty_list() throws Exception {
+    void given_empty_battery_list_when_posting_to_save_endpoint_then_status_400_is_returned() throws Exception {
         mockMvc.perform(post("/batteries")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("[]"))
@@ -168,7 +170,7 @@ class BatteryControllerTest {
     }
 
     @Test
-    void should_return_400_when_required_fields_are_missing() throws Exception {
+    void given_missing_required_fields_in_battery_request_when_posting_then_status_400_is_returned() throws Exception {
         String invalidJson = "[{}]";
 
         mockMvc.perform(post("/batteries")
@@ -178,7 +180,7 @@ class BatteryControllerTest {
     }
 
     @Test
-    void should_return_400_when_capacity_is_negative() throws Exception {
+    void given_negative_capacity_in_battery_request_when_posting_then_status_400_is_returned() throws Exception {
         List<CreateBatteryRequest> requests = List.of(
                 CreateBatteryRequest.builder().name("Battery1").postcode(1000).capacity(-50L).build()
         );

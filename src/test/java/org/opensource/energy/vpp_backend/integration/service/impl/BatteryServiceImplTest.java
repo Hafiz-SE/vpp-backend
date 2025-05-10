@@ -10,7 +10,6 @@ import org.opensource.energy.vpp_backend.service.BatteryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
-import org.springframework.retry.annotation.EnableRetry;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
@@ -18,7 +17,6 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import java.time.Instant;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -29,7 +27,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Tag("integration")
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @EnableJpaAuditing
-@EnableRetry
 class BatteryServiceImplTest {
 
     @Autowired
@@ -71,12 +68,9 @@ class BatteryServiceImplTest {
 
     @Test
     void given_filter_parameters_when_get_battery_stats_then_return_filtered_battery_stats_correctly() {
-        Battery b1 = Battery.builder().name("Alpha").postcode(1000).wattCapacity(100L)
-                .modifiedAt(Instant.now()).createdAt(Instant.now()).build();
-        Battery b2 = Battery.builder().name("Beta").postcode(1001).wattCapacity(300L)
-                .modifiedAt(Instant.now()).createdAt(Instant.now()).build();
-        Battery b3 = Battery.builder().name("Gamma").postcode(1100).wattCapacity(200L)
-                .modifiedAt(Instant.now()).createdAt(Instant.now()).build();
+        Battery b1 = Battery.builder().name("Alpha").postcode(1000).wattCapacity(100L).build();
+        Battery b2 = Battery.builder().name("Beta").postcode(1001).wattCapacity(300L).build();
+        Battery b3 = Battery.builder().name("Gamma").postcode(1100).wattCapacity(200L).build();
 
 
         batteryRepository.saveAll(List.of(b1, b2, b3));

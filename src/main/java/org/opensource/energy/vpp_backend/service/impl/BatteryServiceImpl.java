@@ -40,7 +40,7 @@ public class BatteryServiceImpl implements BatteryService {
                         .build()
                 )
                 .collect(Collectors.toList());
-        
+
         log.debug("Mapped request to battery entities to save: {}", batteriesToSave);
 
         List<Long> savedBatteryIds = batteryRepository
@@ -56,15 +56,16 @@ public class BatteryServiceImpl implements BatteryService {
 
     @Override
     public FilteredBatteryStat getFilteredBatteryStat(Integer postcodeFrom, Integer postcodeTo, Long wattageFrom, Long wattageTo) {
-        log.info("Retrieving filtered battery stats for postcode range [{} - {}] and wattage range [{} - {}]",
+        log.debug("Retrieving filtered battery stats for postcode range [{} - {}] and wattage range [{} - {}]",
                 postcodeFrom, postcodeTo, wattageFrom, wattageTo);
 
         validateRange("postcode", postcodeFrom.longValue(), postcodeTo.longValue());
-        if (wattageFrom != null) validateRange("wattage", wattageFrom, wattageTo);
+        if (wattageFrom != null) {
+            validateRange("wattage", wattageFrom, wattageTo);
+        }
 
         Specification<Battery> spec = BatterySpecification
                 .byPostcodeAndWattageRange(postcodeFrom, postcodeTo, wattageFrom, wattageTo);
-
         List<Battery> batteries = batteryRepository.findAll(spec);
         log.info("Found {} battery record(s) matching the criteria.", batteries.size());
 

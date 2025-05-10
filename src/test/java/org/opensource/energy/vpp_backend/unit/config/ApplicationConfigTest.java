@@ -24,20 +24,19 @@ class ApplicationConfigTest {
     void setUp() throws Exception {
         config = new ApplicationConfig();
 
-        // Simulate @Value injection for 'allowedOrigin' field
         Field allowedOriginField = ApplicationConfig.class.getDeclaredField("allowedOrigin");
         allowedOriginField.setAccessible(true);
         allowedOriginField.set(config, "http://localhost:3000");
     }
 
     @Test
-    void corsFilter_should_create_instance() {
+    void given_application_context_when_cors_filter_is_loaded_then_instance_is_created() {
         CorsFilter filter = config.corsFilter();
         assertThat(filter).isNotNull();
     }
 
     @Test
-    void swaggerConfig_should_return_openapi_with_context_path() {
+    void given_swagger_config_when_openapi_is_requested_then_openapi_contains_context_path() {
         OpenAPI openAPI = config.swaggerConfig("/api");
         assertThat(openAPI.getInfo().getTitle()).isEqualTo(SwaggerConstants.VPP_API_TITLE);
         assertThat(openAPI.getInfo().getVersion()).isEqualTo(SwaggerConstants.VPP_API_VERSION);
@@ -46,7 +45,7 @@ class ApplicationConfigTest {
     }
 
     @Test
-    void swaggerConfig_should_return_openapi_with_root_when_context_path_is_empty() {
+    void given_empty_context_path_when_openapi_is_requested_then_openapi_contains_root_path() {
         OpenAPI openAPI = config.swaggerConfig("");
         assertThat(openAPI.getServers()).extracting(Server::getUrl).containsExactly("/");
     }

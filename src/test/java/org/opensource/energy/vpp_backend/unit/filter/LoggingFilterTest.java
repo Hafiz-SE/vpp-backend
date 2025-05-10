@@ -30,16 +30,13 @@ public class LoggingFilterTest {
 
     @Test
     void given_request_when_filtered_then_logs_request_and_response() throws ServletException, IOException {
-        // given
         MockHttpServletRequest mockRequest = new MockHttpServletRequest("GET", "/test");
         mockRequest.setContent("hello".getBytes());
 
         MockHttpServletResponse mockResponse = new MockHttpServletResponse();
 
-        // when
         filter.doFilter(mockRequest, mockResponse, filterChain);
 
-        // then
         verify(filterChain).doFilter(any(), any());
     }
 }
