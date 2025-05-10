@@ -20,6 +20,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.opensource.energy.vpp_backend.constant.FixedDBConstant.DB_VERSION;
 
 @SpringBootTest
 @Testcontainers
@@ -36,10 +37,10 @@ class BatteryServiceImplTest {
     private BatteryRepository batteryRepository;
 
     @Container
-    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:15.3")
-            .withDatabaseName(FixedDBConstant.FIXED_DB)
-            .withUsername(FixedDBConstant.FIXED_DB_USER)
-            .withPassword(FixedDBConstant.FIXED_DB_PASS);
+    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>(DB_VERSION)
+            .withDatabaseName(FixedDBConstant.DB_NAME)
+            .withUsername(FixedDBConstant.DB_USER)
+            .withPassword(FixedDBConstant.DB_PASS);
 
     @DynamicPropertySource
     static void overrideProps(DynamicPropertyRegistry registry) {
