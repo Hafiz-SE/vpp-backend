@@ -12,12 +12,13 @@ querying**, supporting validation, range filtering, and robust error handling fo
 1. [Feature Highlights](#-feature-highlights)
 2. [API Functionality](#-api-functionality)
 3. [Technology Stack](#-technology-stack)
-4. [Prerequisites](#️-prerequisites)
-5. [Running the Application](#-running-the-application)
-6. [Running Test Cases](#-running-test-cases)
-7. [Viewing the Application](#-viewing-the-application)
-8. [Architectural Decisions](#-architectural-decisions)
-9. [Improvements for Future Implementation](#️-improvements-for-future-implementation)
+4. [Prerequisites](#-prerequisites)
+5. [Flow Diagram](#flow-diagram)
+6. [Running the Application](#-running-the-application)
+7. [Running Test Cases](#-running-test-cases)
+8. [Viewing the Application](#-viewing-the-application)
+9. [Architectural Decisions](#-architectural-decisions)
+10. [Improvements for Future Implementation](#️-improvements-for-future-implementation)
 
 ---
 
@@ -136,6 +137,9 @@ querying**, supporting validation, range filtering, and robust error handling fo
 - pgAdmin
 
 ---
+## 🔄 Flow Diagram
+
+![Flow Diagram](./Flow%20Diagram.png)
 
 ## 🚀 Running the Application
 
@@ -188,8 +192,7 @@ This will execute all unit and integration tests defined in the project and gene
 Once the application is running, you can access and interact with it through the following interfaces:
 
 - **Base API URL**: [http://localhost:8080/api](http://localhost:8080/api)
-- **Swagger UI (API Documentation)
-  **: [http://localhost:8080/api/swagger-ui/index.html](http://localhost:8080/api/swagger-ui/index.html)
+- **Swagger UI (API Documentation)** : [http://localhost:8080/api/swagger-ui/index.html](http://localhost:8080/api/swagger-ui/index.html)
 - **OpenAPI JSON Spec**: [http://localhost:8080/api/v3/api-docs](http://localhost:8080/api/v3/api-docs)
 - **Health Check & Metrics (via Actuator)**:
     - **Health**: [http://localhost:8080/api/actuator/health](http://localhost:8080/api/actuator/health)
@@ -278,7 +281,7 @@ These endpoints validate that the application is running correctly and provide i
 
 ---
 
-## 🛠️ Improvements for Future Implementation
+# 🛠️ Improvements for Future Implementation
 
 ### 🔐 Security
 
