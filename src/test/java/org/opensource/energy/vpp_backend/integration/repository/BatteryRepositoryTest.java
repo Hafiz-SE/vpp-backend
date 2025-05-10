@@ -21,6 +21,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.opensource.energy.vpp_backend.constant.FixedDBConstant.DB_VERSION;
 
 @Testcontainers
 @DataJpaTest
@@ -30,10 +31,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class BatteryRepositoryTest {
 
     @Container
-    static PostgreSQLContainer<?> postgresContainer = new PostgreSQLContainer<>("postgres:15.3-alpine")
-            .withDatabaseName(FixedDBConstant.FIXED_DB)
-            .withUsername(FixedDBConstant.FIXED_DB_USER)
-            .withPassword(FixedDBConstant.FIXED_DB_PASS);
+    static PostgreSQLContainer<?> postgresContainer = new PostgreSQLContainer<>(DB_VERSION)
+            .withDatabaseName(FixedDBConstant.DB_NAME)
+            .withUsername(FixedDBConstant.DB_USER)
+            .withPassword(FixedDBConstant.DB_PASS);
 
     @DynamicPropertySource
     static void overrideProps(DynamicPropertyRegistry registry) {
