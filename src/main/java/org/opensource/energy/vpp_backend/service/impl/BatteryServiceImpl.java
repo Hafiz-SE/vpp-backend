@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.opensource.energy.vpp_backend.util.ValidationUtil.validateRange;
 
@@ -38,8 +39,8 @@ public class BatteryServiceImpl implements BatteryService {
                         .wattCapacity(req.getCapacity())
                         .build()
                 )
-                .toList();
-
+                .collect(Collectors.toList());
+        
         log.debug("Mapped request to battery entities to save: {}", batteriesToSave);
 
         List<Long> savedBatteryIds = batteryRepository

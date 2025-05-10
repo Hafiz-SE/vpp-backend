@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.HandlerMethodValidationException;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.time.Instant;
 import java.util.List;
@@ -164,4 +165,27 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE).body(response);
     }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<ErrorResponse> handle_type_mismatch(MethodArgumentTypeMismatchException ex,
+                                                              HttpServletRequest request) {
+        String fieldName = ex.getName();
+        String expectedType = ex.getRequiredType() != null ? ex.getRequiredType().getSimpleName() : "unknown";
+        String message = String.format("Invalid value for parameter '%s'. Expected type: %s", fieldName, expectedType);
+
+        FieldErrorDetail errorDetail = FieldErrorDetail.builder()
+                .field(fieldName)
+                .message(message)
+                .build();
+
+        ErrorResponse error = ErrorResponse.builder()
+                .message("Invalid request parameter")
+                .errorCode("TYPE_MISMATCH")
+                .path(request.getRequestURI())
+                .errors(List.of(errorDetail))
+                .build();
+
+        return ResponseEntity.badRequest().body(error);
+    }
+
 }

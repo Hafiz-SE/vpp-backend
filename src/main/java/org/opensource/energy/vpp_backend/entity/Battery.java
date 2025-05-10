@@ -2,20 +2,21 @@ package org.opensource.energy.vpp_backend.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
-@EqualsAndHashCode(callSuper = true)
-@Entity
-@Data
-@ToString(callSuper = true)
 @Table(
         name = "battery",
         indexes = {
                 @Index(name = "idx_battery_postcode", columnList = "postcode")
         }
 )
-@Builder
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
+@SuperBuilder
+@Data
 public class Battery extends Audit {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "battery_seq_gen")
