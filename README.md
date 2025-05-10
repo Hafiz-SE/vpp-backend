@@ -1,10 +1,10 @@
 # Virtual Power Plant (VPP) Backend Application
 
-The VPP API provides endpoints to manage and analyze distributed battery data within a Virtual Power Plant system. It
+`The VPP API provides endpoints to manage and analyze distributed battery data within a Virtual Power Plant system. It
 enables clients to store battery metadata (e.g., name, postcode, watt capacity) and retrieve filtered statistics such as
 total, average, minimum, and maximum capacities within specified ranges. This API is designed for high-performance data
 ingestion and querying, with support for range filtering, validation, and error handling for real-time energy management
-applications.
+applications.`
 ------------------------
 
 # ⚡ Feature Highlights
@@ -143,7 +143,7 @@ build process, subsequent runs will be significantly faster.*
 
 2. To stop the application, press Ctrl+C in the terminal or close the terminal window.
 
-# 🖥️ Standalone Mode (Local JVM)
+### 🖥️ Standalone Mode (Local JVM)
 
 1. Update the following values in the file. `src/main/resources/application-dev.properties`
 
